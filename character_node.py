@@ -60,8 +60,14 @@ class CharacterNode:
         for sheet_name, sheet_dict in temp_instance.sheet_data.items():
             if sheet_dict:  # 确保工作表有数据
                 options = list(sheet_dict.keys())
-                input_types["required"][sheet_name] = (options, {
-                    "default": options[0] if options else ""
+                default_value = options[0] if options else ""
+
+                input_types["required"][sheet_name] = ("STRING", {
+                    "default": default_value,
+                    "tooltip": f"Select multiple items for {sheet_name}",
+                    # 自定义字段，用于前端识别这是个多选 widget
+                    "comfywidget": "multiselect",
+                    "options": options  # 把选项传给前端
                 })
         
         return input_types
